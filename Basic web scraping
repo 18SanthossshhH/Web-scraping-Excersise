@@ -1,7 +1,0 @@
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-
-websitecode = urlopen("https://www.google.com/").read()
-soup = BeautifulSoup(websitecode, "html.parser")
-links = soup.find_all()
-print(links)

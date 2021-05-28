@@ -1,0 +1,29 @@
+import requests
+from bs4 import BeautifulSoup
+import os
+
+
+url = 'https://www.airbnb.co.in/s/Bengaluru--Karnataka/homes?place_id=ChIJbU60yXAWrjsR4E9-UejD3_g&checkin=2021-05-28&checkout=2021-05-29&adults=2&children=0&landing_page_section=MARQUEE'
+
+
+
+def imagedown(url, folder):
+    try:
+        os.mkdir(os.path.join(os.getcwd(), folder))
+    except:
+        pass
+    os.chdir(os.path.join(os.getcwd(), folder))
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    images = soup.find_all('img')
+
+    for image in images:
+        name = image['alt']
+        link = image['src']
+        with open(name.replace(' ', '-').replace('/', '') + '.jpg', 'wb') as f:
+            im = requests.get(link)
+            f.write(im.content)
+            print('writing', name)
+
+
+imagedown('https://www.airbnb.co.in/s/Goa/homes?place_id=ChIJQbc2YxC6vzsRkkDzYv-H-Oo&checkin=2021-05-28&checkout=2021-05-29&adults=2&children=0&landing_page_section=MARQUEE', 'goa')
